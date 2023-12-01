@@ -1,35 +1,36 @@
+import React from "react";
 import { NextPageContext } from "next";
 import { getSession } from "next-auth/react";
 
+import Navbar from "@/components/Navbar";
 import Billboard from "@/components/Billboard";
 import MovieList from "@/components/MovieList";
-import Navbar from "@/components/Navbar";
+import InfoModal from "@/components/InfoModal";
 import useMovieList from "@/hooks/useMovieList";
 import useFavorites from "@/hooks/useFavorites";
-import InfoModal from "@/components/InfoModal";
-import useInfoModal from "@/hooks/useInfoModal";
+import useInfoModalStore from "@/hooks/useInfoModalStore";
 
 export async function getServerSideProps(context: NextPageContext) {
-  try {
-    const session = await getSession(context);
-    if (!session) {
-      return {
-        redirect: {
-          destination: "/auth",
-          permanent: false,
-        },
-      };
-    }
-    return { props: {} };
-  } catch (error) {
-    console.error("Error getting session:", error);
-    return { props: {} };
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/auth",
+        permanent: false,
+      },
+    };
   }
+
+  return {
+    props: {},
+  };
 }
-export default function Home() {
+
+const Home = () => {
   const { data: movies = [] } = useMovieList();
   const { data: favorites = [] } = useFavorites();
-  const { isOpen, closeModal } = useInfoModal();
+  const { isOpen, closeModal } = useInfoModalStore();
 
   return (
     <>
@@ -42,4 +43,6 @@ export default function Home() {
       </div>
     </>
   );
-}
+};
+
+export default Home;
