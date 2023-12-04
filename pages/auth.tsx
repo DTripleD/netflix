@@ -9,20 +9,26 @@ import { FaGithub } from "react-icons/fa";
 import Input from "@/components/Input";
 
 export async function getServerSideProps(context: NextPageContext) {
-  const session = await getSession(context);
+  try {
+    const session = await getSession(context);
+    console.log(session);
 
-  if (session) {
+    if (session) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    }
+
     return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
+      props: {},
     };
+  } catch (error) {
+    console.error("Error getting session:", error);
+    return { props: {} };
   }
-
-  return {
-    props: {},
-  };
 }
 
 const Auth = () => {
