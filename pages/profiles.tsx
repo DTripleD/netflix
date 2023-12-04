@@ -23,7 +23,7 @@ export async function getServerSideProps(context: NextPageContext) {
     return {
       redirect: {
         destination: "/auth",
-        permanent: false,
+        permanent: true,
       },
     };
   }
