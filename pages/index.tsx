@@ -17,11 +17,17 @@ export async function getServerSideProps(context: NextPageContext) {
     return {
       redirect: {
         destination: "/auth",
-        permanent: true,
+        permanent: false,
       },
     };
   }
-  return { props: {} };
+  return {
+    props: {},
+    redirect: {
+      destination: "/",
+      permanent: false,
+    },
+  };
 }
 
 const Home = () => {

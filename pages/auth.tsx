@@ -15,13 +15,17 @@ export async function getServerSideProps(context: NextPageContext) {
     return {
       redirect: {
         destination: "/",
-        permanent: true,
+        permanent: false,
       },
     };
   }
 
   return {
     props: {},
+    redirect: {
+      destination: "/",
+      permanent: false,
+    },
   };
 }
 
