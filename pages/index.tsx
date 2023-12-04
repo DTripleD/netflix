@@ -11,22 +11,17 @@ import useFavorites from "@/hooks/useFavorites";
 import useInfoModalStore from "@/hooks/useInfoModalStore";
 
 export async function getServerSideProps(context: NextPageContext) {
-  try {
-    const session = await getSession(context);
-    console.log(session);
-    if (!session) {
-      return {
-        redirect: {
-          destination: "/auth",
-          permanent: false,
-        },
-      };
-    }
-    return { props: {} };
-  } catch (error) {
-    console.error("Error getting session:", error);
-    return { props: {} };
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/auth",
+        permanent: false,
+      },
+    };
   }
+  return { props: {} };
 }
 
 const Home = () => {
