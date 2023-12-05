@@ -7,6 +7,7 @@ import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 
 import Input from "@/components/Input";
+import toast from "react-hot-toast";
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
@@ -42,14 +43,19 @@ const Auth = () => {
 
   const login = useCallback(async () => {
     try {
-      await signIn("credentials", {
+      const response = await signIn("credentials", {
         email,
         password,
         redirect: false,
         callbackUrl: "/",
       });
 
+      if (response?.error !== undefined && response?.error !== null) {
+        return toast.error(response.error);
+      }
+
       router.push("/profiles");
+      toast.success("Success!");
     } catch (error) {
       console.log(error);
     }
@@ -64,8 +70,8 @@ const Auth = () => {
       });
 
       login();
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      toast.error(error.response.data.error);
     }
   }, [email, name, password, login]);
 
